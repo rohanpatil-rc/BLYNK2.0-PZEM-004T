@@ -1,0 +1,62 @@
+#define BLYNK_TEMPLATE_ID "Your_Template_ID"
+#define BLYNK_DEVICE_NAME "Your_Device_Name"
+#define BLYNK_FIRMWARE_VERSION "1.0.0"
+
+#include <PZEM004Tv30.h>
+#include <WiFi.h>
+#include <BlynkSimpleEsp32.h>
+
+// Set your WiFi and Blynk credentials
+char ssid[] = "Your_SSID";
+char pass[] = "Your_PASSWORD";
+char auth[] = "Your_BLYNK_AUTH_TOKEN";
+
+// PZEM-004T setup with Serial2, RX=4, TX=23
+PZEM004Tv30 pzem(Serial2, 4, 23);  // Serial2, RX, TX
+
+// Define virtual pins for Blynk app
+#define V_PIN_VOLTAGE V0
+#define V_PIN_CURRENT V1
+#define V_PIN_POWER V2
+#define V_PIN_ENERGY V3
+
+void setup() {
+  // Initialize serial communication for debugging
+  Serial.begin(115200);
+
+  // Initialize WiFi and Blynk connection
+  WiFi.begin(ssid, pass);
+  Blynk.begin(auth, ssid, pass);
+
+  Serial.println("Connected to WiFi and Blynk ready!");
+}
+
+void loop() {
+  Blynk.run();
+
+  // Read voltage, current, power, and energy
+  float voltage = pzem.voltage();
+  float current = pzem.current();
+  float power = pzem.power();
+  float energy = pzem.energy();
+
+  // Check for valid readings
+  if(!isnan(voltage)) {
+    Blynk.virtualWrite(V_PIN_VOLTAGE, voltage);
+    Serial.print("Voltage: "); Serial.println(voltage);
+  }
+  if(!isnan(current)) {
+    Blynk.virtualWrite(V_PIN_CURRENT, current);
+    Serial.print("Current: "); Serial.println(current);
+  }
+  if(!isnan(power)) {
+    Blynk.virtualWrite(V_PIN_POWER, power);
+    Serial.print("Power: "); Serial.println(power);
+  }  
+  if(!isnan(energy)) {
+    Blynk.virtualWrite(V_PIN_ENERGY, energy);
+    Serial.print("Energy: "); Serial.println(energy);
+  }
+
+  delay(1000);  // Adjust delay as needed
+}
