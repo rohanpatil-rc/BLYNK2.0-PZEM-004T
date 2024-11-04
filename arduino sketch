@@ -1,5 +1,5 @@
 #define BLYNK_TEMPLATE_ID "Your_Template_ID"
-#define BLYNK_DEVICE_NAME "Your_Device_Name"
+#define BLYNK_TEMPLATE_NAME "Your_Device_Name"
 #define BLYNK_FIRMWARE_VERSION "1.0.0"
 
 #include <PZEM004Tv30.h>
